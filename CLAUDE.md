@@ -81,7 +81,7 @@ reached through composables; UI never imports mock data.
   GeneratorStudio). SVG geometry attributes are fine.
 - `orbit-text` (gradient-clipped text) must keep its `::selection` override, or selected text
   turns invisible.
-- Breakpoints `sm 36rem · md 48rem · lg 64rem · xl 80rem`; must not scroll horizontally at 375px.
+- Breakpoints `sm 36rem · md 48rem · lg 64rem · xl 80rem · xxl 100rem`; must not scroll horizontally at 375px.
 
 ## Commits
 

@@ -76,20 +76,55 @@ onMounted(() => { if (route.query.run === '1') void run() })
       <UiCard title="Campaigns" subtitle="Email, social and — later — WhatsApp" :padded="false">
         <div class="mk__table">
           <table>
-            <thead><tr><th>Campaign</th><th>Status</th><th class="r">Sent</th><th class="r">Open</th><th class="r">Click</th><th class="r">Revenue</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Status</th>
+                <th class="r">Sent</th>
+                <th class="rate">Open rate</th>
+                <th class="rate">Click rate</th>
+                <th class="r">Revenue</th>
+              </tr>
+            </thead>
             <tbody>
               <tr v-for="c in campaigns" :key="c.id">
                 <td>
                   <span class="mk__cname">
-                    <UiIcon :name="channelIcon[c.channel]" :size="16" />
-                    <span><strong>{{ c.name }}</strong><small>{{ c.audience }}<template v-if="c.insightId"> · from AI insight</template></small></span>
+                    <span class="mk__channel" :class="`mk__channel--${c.channel}`" :title="c.channel">
+                      <UiIcon :name="channelIcon[c.channel]" :size="16" />
+                    </span>
+                    <span>
+                      <strong>{{ c.name }}</strong>
+                      <small>
+                        {{ c.audience }}
+                        <UiBadge v-if="c.insightId" tone="ai" icon="sparkles">AI insight</UiBadge>
+                      </small>
+                    </span>
                   </span>
                 </td>
                 <td><UiBadge :tone="statusTone[c.status]" dot>{{ c.status.replace('_', ' ') }}</UiBadge></td>
-                <td class="r num">{{ f.number(c.sent, true) }}</td>
-                <td class="r num">{{ c.sent ? f.percent(campaignRates(c).openRate, 0) : '—' }}</td>
-                <td class="r num">{{ c.opened ? f.percent(campaignRates(c).clickRate, 0) : '—' }}</td>
-                <td class="r num">{{ c.revenue ? f.money(c.revenue) : '—' }}</td>
+                <td class="r num">{{ c.sent ? f.number(c.sent, true) : '—' }}</td>
+                <td class="rate">
+                  <span v-if="c.sent" class="mk__rate">
+                    <span class="num">{{ f.percent(campaignRates(c).openRate, 0) }}</span>
+                    <svg viewBox="0 0 100 4" preserveAspectRatio="none" aria-hidden="true">
+                      <rect width="100" height="4" rx="2" class="mk__rate-bg" />
+                      <rect :width="campaignRates(c).openRate * 100" height="4" rx="2" class="mk__rate-open" />
+                    </svg>
+                  </span>
+                  <span v-else class="mk__none">—</span>
+                </td>
+                <td class="rate">
+                  <span v-if="c.opened" class="mk__rate">
+                    <span class="num">{{ f.percent(campaignRates(c).clickRate, 0) }}</span>
+                    <svg viewBox="0 0 100 4" preserveAspectRatio="none" aria-hidden="true">
+                      <rect width="100" height="4" rx="2" class="mk__rate-bg" />
+                      <rect :width="campaignRates(c).clickRate * 100" height="4" rx="2" class="mk__rate-click" />
+                    </svg>
+                  </span>
+                  <span v-else class="mk__none">—</span>
+                </td>
+                <td class="r num"><strong v-if="c.revenue">{{ f.money(c.revenue) }}</strong><span v-else class="mk__none">—</span></td>
               </tr>
             </tbody>
           </table>
@@ -153,28 +188,87 @@ onMounted(() => { if (route.query.run === '1') void run() })
     gap: 1.25rem;
     align-items: start;
 
-    @include respond-to('xl') { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+    @include respond-to('xxl') { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
   }
 
   &__table {
     overflow-x: auto;
+    border-top: 1px solid var(--c-line);
 
-    table { min-width: 40rem; font-size: 0.84rem; }
-    th { padding: 0.6rem 1rem; background: var(--c-surface-2); color: var(--c-muted); font-size: 0.72rem; text-align: left; text-transform: uppercase; }
-    td { padding: 0.7rem 1rem; border-top: 1px solid var(--c-line); }
-    .r { text-align: right; }
+    table { min-width: 46rem; font-size: 0.86rem; }
+
+    th {
+      padding: 0.7rem 1rem;
+      background: var(--c-surface-2);
+      color: var(--c-muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--c-line);
+      vertical-align: middle;
+    }
+
+    th:first-child, td:first-child { padding-left: clamp(1rem, 2.4vw, 1.4rem); }
+    th:last-child, td:last-child { padding-right: clamp(1rem, 2.4vw, 1.4rem); }
+
+    tbody tr { transition: background var(--dur-fast); }
+    tbody tr:hover { background: var(--c-surface-2); }
+
+    .r { text-align: right; white-space: nowrap; }
+    .rate { width: 8rem; min-width: 7rem; }
+    td:first-child { min-width: 17rem; }
     :deep(.badge) { text-transform: capitalize; }
   }
 
   &__cname {
     display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.75rem;
 
-    .ui-icon { margin-top: 0.15rem; color: var(--c-primary); }
-    span { display: grid; line-height: 1.35; }
-    small { color: var(--c-muted); font-size: 0.74rem; }
+    > span:last-child { display: grid; gap: 0.15rem; min-width: 0; line-height: 1.35; }
+    strong { font-weight: 600; }
+
+    small {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--c-muted);
+      font-size: 0.76rem;
+    }
   }
+
+  &__channel {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+
+    &--email { background: var(--c-primary-soft); color: var(--c-primary); }
+    &--social { background: var(--c-flare-soft); color: var(--c-flare); }
+    &--whatsapp { background: var(--c-success-soft); color: var(--c-success); }
+  }
+
+  &__rate {
+    display: grid;
+    gap: 0.35rem;
+
+    svg { width: 100%; height: 4px; }
+  }
+
+  &__rate-bg { fill: var(--c-line); }
+  &__rate-open { fill: var(--c-series-1); }
+  &__rate-click { fill: var(--c-series-3); }
+  &__none { color: var(--c-faint); }
 
   &__plan {
     display: grid;

@@ -27,6 +27,17 @@ withDefaults(defineProps<{
 
   &--padded { padding: clamp(1rem, 2.4vw, 1.4rem); }
 
+  // Unpadded cards hold edge-to-edge content (tables): the header keeps its
+  // own inset and the content is clipped to the rounded corners.
+  &:not(&--padded) {
+    overflow: hidden;
+
+    .card__head {
+      margin-bottom: 0;
+      padding: clamp(1rem, 2.4vw, 1.4rem);
+    }
+  }
+
   &__head {
     display: flex;
     align-items: flex-start;

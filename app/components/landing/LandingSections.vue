@@ -302,7 +302,7 @@ const bars = [38, 52, 44, 61, 57, 72, 68, 86]
     color: var(--c-surface);
   }
 
-  // Mini illustrations (all shape, no fake numbers except the demo sample's)
+  // Mini illustrations: shapes only, no invented numbers beyond the demo sample
   &__art {
     --ghost: color-mix(in srgb, var(--c-surface) 16%, transparent);
     --ghost-2: color-mix(in srgb, var(--c-surface) 9%, transparent);
