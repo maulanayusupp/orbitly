@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@nuxtjs/seo':
         specifier: 5.3.16
-        version: 5.3.16(4wyel7xydclw5zlm522ud7r2ca)
+        version: 5.3.16(jfjt76uc73p3xrc4ngmtnu5are)
       '@pinia/nuxt':
         specifier: 1.0.2
         version: 1.0.2(magic-string@1.4.2)(magicast@0.5.5)(oxc-parser@0.151.0)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.11)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.11)(rollup@4.63.5)(vite@8.3.1(@types/node@20.19.43)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.0)(terser@5.51.2)))
@@ -23,6 +23,9 @@ importers:
       pinia:
         specifier: 4.0.3
         version: 4.0.3(@vue/devtools-api@8.2.1)(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3))
+      playwright-core:
+        specifier: ^1.63.0
+        version: 1.63.0
     devDependencies:
       '@types/node':
         specifier: 20.19.43
@@ -2807,6 +2810,11 @@ packages:
   pkg-types@2.3.3:
     resolution: {integrity: sha512-j/lCFdcppV0JxWpCEITdbDltBxPP6cHT+yNJ6Go2OgoSA9518X847X9z0p6LtA4Nc16+eQzCZjRrWanTGvHJ5w==}
 
+  playwright-core@1.63.0:
+    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   postcss-calc@10.1.1:
     resolution: {integrity: sha512-NYEsLHh8DgG/PRH2+G9BTuUdtf9ViS+vdoQ0YA5OQdGsfN4ztiwtDWNtBl9EKeqNMFnIu8IKZ0cLxEQ5r5KVMw==}
     engines: {node: ^18.12 || ^20.9 || >=22.0}
@@ -4643,14 +4651,14 @@ snapshots:
       - vite
       - vue
 
-  '@nuxtjs/seo@5.3.16(4wyel7xydclw5zlm522ud7r2ca)':
+  '@nuxtjs/seo@5.3.16(jfjt76uc73p3xrc4ngmtnu5are)':
     dependencies:
       '@nuxt/kit': 4.5.2(magic-string@1.4.2)(magicast@0.5.5)(oxc-parser@0.151.0)(rolldown@1.2.11)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.11)(rollup@4.63.5)(vite@8.3.1(@types/node@20.19.43)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.0)(terser@5.51.2)))
       '@nuxtjs/robots': 6.2.3(kgxdfkixjlxlhbohl27mszqu4y)
       '@nuxtjs/sitemap': 8.5.1(kgxdfkixjlxlhbohl27mszqu4y)
       nuxt: 4.5.2(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@oxc-project/types@0.151.0)(@parcel/watcher@2.6.0)(@types/node@20.19.43)(@vue/compiler-sfc@3.5.43)(db0@0.3.4)(esbuild@0.28.2)(ioredis@5.11.1)(lightningcss@1.33.0)(magicast@0.5.5)(oxc-parser@0.151.0)(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@5.9.3)(vue@3.5.43(typescript@5.9.3)))(rolldown@1.2.11)(rollup-plugin-visualizer@7.1.1(rolldown@1.2.11)(rollup@4.63.5))(rollup@4.63.5)(sass@1.105.0)(srvx@0.11.22)(terser@5.51.2)(typescript@5.9.3)(vite@8.3.1(@types/node@20.19.43)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.0)(terser@5.51.2))(vue-tsc@3.3.11(typescript@5.9.3))
       nuxt-link-checker: 5.3.0(ndnzdvqarxmzkmmsluhawiyfwm)
-      nuxt-og-image: 6.9.1(fnv75gfrp6ibqreu4tzcsttkxu)
+      nuxt-og-image: 6.9.1(6iu6qf7qhazsbt2dtvxdywjkfa)
       nuxt-schema-org: 6.3.2(lubdfi5qztikcbqyv7qhsuh6ie)
       nuxt-seo-utils: 8.5.2(5zsnsbt5iwhk5hjy3ipnqyixqa)
       nuxt-site-config: 4.2.3(kgxdfkixjlxlhbohl27mszqu4y)
@@ -6557,7 +6565,7 @@ snapshots:
       - vue
       - zod
 
-  nuxt-og-image@6.9.1(fnv75gfrp6ibqreu4tzcsttkxu):
+  nuxt-og-image@6.9.1(6iu6qf7qhazsbt2dtvxdywjkfa):
     dependencies:
       '@clack/prompts': 1.8.1
       '@nuxt/kit': 4.5.2(magic-string@1.4.2)(magicast@0.5.5)(oxc-parser@0.151.0)(rolldown@1.2.11)(unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.11)(rollup@4.63.5)(vite@8.3.1(@types/node@20.19.43)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.0)(terser@5.51.2)))
@@ -6594,6 +6602,7 @@ snapshots:
     optionalDependencies:
       '@takumi-rs/core': 2.14.0(csstype@3.2.3)
       nitropack: 2.13.4(@parcel/watcher@2.6.0)(oxc-parser@0.151.0)(rolldown@1.2.11)(srvx@0.11.22)(vite@8.3.1(@types/node@20.19.43)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.0)(terser@5.51.2))
+      playwright-core: 1.63.0
       sharp: 0.35.5(@types/node@20.19.43)
     transitivePeerDependencies:
       - '@farmfe/core'
@@ -6999,6 +7008,8 @@ snapshots:
       confbox: 0.3.1
       exsolve: 1.1.1
       pathe: 2.0.3
+
+  playwright-core@1.63.0: {}
 
   postcss-calc@10.1.1(postcss@8.5.28):
     dependencies:

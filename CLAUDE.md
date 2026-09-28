@@ -43,6 +43,7 @@ app/
   components/   auto-imported by FILENAME (pathPrefix: false)
     ui/         presentational kit (UiButton, UiCard, UiModal, UiField, UiConfidence…)
     app/        shell (AppSidebar, AppTopbar, AppMobileNav, PublicHeader/Footer, BrandMark)
+    content/    ContentArticle (SSR content pages: breadcrumbs, TOC, blocks, FAQ, related)
     landing/    GeneratorStudio (composition root), ImageDrop, StageList, AiFlag,
                 HeroShowcase (hero art — shows the REAL output of the mug sample; keep in sync),
                 LandingSections (steps, workspace bento, trust, CTA), LandingFaq
@@ -55,6 +56,7 @@ app/
 Rules: pages orchestrate; components are prop-driven; domain logic lives in services and is
 reached through composables; UI never imports mock data.
 
+- Public header/footer link to the content pages (internal linking); the home demo anchor is `/#demo`.
 - Landing studio is a wizard: step 1 (upload) is shown alone and centred; step 2 (listing)
   mounts only once an image exists, and Reset returns to step 1.
 - `ProductPreview` is container-query driven; pass `framed` for the browser-mock look (landing
@@ -88,7 +90,16 @@ reached through composables; UI never imports mock data.
 
 - `@nuxtjs/seo` 5.3.16 (site config, sitemap, robots, schema.org). `site.url` comes from
   `NUXT_PUBLIC_SITE_URL` (see `.env.example`); set it to the real domain before deploying.
-- **Only `/` is indexable.** Every app/storefront route gets `ssr: false` + `robots: false`
+- **Indexable = `/` + content pages.** Content lives in `config/content.config.ts` (plain data,
+  no alias imports — `nuxt.config.ts` imports it) and renders through
+  `components/content/ContentArticle.vue`: `/features`, `/ai-product-description-generator`,
+  `/use-cases`, `/guides`, `/guides/[slug]`. All are **prerendered** and listed in the sitemap via
+  `CONTENT_ROUTES`. Each gets canonical, OG/Twitter, BreadcrumbList, WebPage, plus Article
+  (guides) or FAQPage (when `faq` is set). Titles ≤ 60 chars, descriptions ≤ 155.
+- Content rules: practical and specific; **no invented statistics, testimonials, rankings or
+  claims about other products.** To add a guide, add an entry with `kind: 'guide'` — routing,
+  sitemap, footer links and the guides index pick it up automatically.
+- Every app/storefront route gets `ssr: false` + `robots: false`
   (`X-Robots-Tag: noindex`) from the `noindexRoutes` list in `nuxt.config.ts`, and is excluded
   from the sitemap — they are client-only demo data. Add new app routes to that list.
 - Home meta lives in `config/landing.config.ts` (`HOME_SEO`, description ≤ 155 chars). The same

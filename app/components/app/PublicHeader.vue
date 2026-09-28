@@ -3,6 +3,13 @@ const scrolled = ref(false)
 function onScroll() { scrolled.value = window.scrollY > 8 }
 onMounted(() => { onScroll(); window.addEventListener('scroll', onScroll, { passive: true }) })
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+
+const links = [
+  { to: '/features', label: 'Features' },
+  { to: '/ai-product-description-generator', label: 'AI generator' },
+  { to: '/use-cases', label: 'Use cases' },
+  { to: '/guides', label: 'Guides' },
+]
 </script>
 
 <template>
@@ -10,10 +17,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     <div class="phead__inner">
       <BrandMark />
       <nav class="phead__nav" aria-label="Site">
-        <a href="#how">How it works</a>
-        <a href="#workspace">Workspace</a>
-        <a href="#trust">Trust</a>
-        <a href="#faq">FAQ</a>
+        <NuxtLink v-for="l in links" :key="l.to" :to="l.to" active-class="is-active">{{ l.label }}</NuxtLink>
       </nav>
       <UiButton to="/dashboard" variant="dark" size="sm" icon-right="arrowRight">Open dashboard</UiButton>
     </div>
@@ -49,7 +53,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     font-size: 0.9rem;
     font-weight: 500;
 
-    a:hover { color: var(--c-ink); }
+    a:hover, a.is-active { color: var(--c-ink); }
+    a.is-active { font-weight: 600; }
 
     @include respond-to('md') { display: flex; }
   }

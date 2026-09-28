@@ -83,7 +83,7 @@ function tryDemo() {
       </div>
     </section>
 
-    <section ref="demoAnchor" class="try">
+    <section id="demo" ref="demoAnchor" class="try">
       <div class="try__head">
         <p class="try__eyebrow">Live demo</p>
         <h2>Try it with your own product</h2>

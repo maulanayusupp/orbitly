@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'node:url'
+import { CONTENT_ROUTES } from './app/config/content.config'
 
 // Shared SCSS (variables + mixins, no CSS output) injected into every
 // component <style lang="scss"> block.
@@ -60,7 +61,11 @@ export default defineNuxtConfig({
 
   // The workspace is a client-side demo backed by localStorage, so app routes
   // render in the browser and carry `noindex`. The landing page is SSR.
-  routeRules: Object.fromEntries(noindexRoutes.map(r => [r, { ssr: false, robots: false }])),
+  // Marketing + content pages are prerendered to static HTML at build time.
+  routeRules: {
+    ...Object.fromEntries(noindexRoutes.map(r => [r, { ssr: false, robots: false }])),
+    ...Object.fromEntries(['/', ...CONTENT_ROUTES].map(r => [r, { prerender: true }])),
+  },
 
   // ---- SEO (@nuxtjs/seo: site config, sitemap, robots, schema.org, meta) ----
   site: {
@@ -75,6 +80,8 @@ export default defineNuxtConfig({
     // Only the public marketing surface. App routes stay crawlable (so crawlers
     // can read their noindex header/meta) but are never listed here.
     exclude: noindexRoutes,
+    // Dynamic guide pages are not discoverable from the file tree.
+    urls: CONTENT_ROUTES,
   },
 
   schemaOrg: {
@@ -84,6 +91,12 @@ export default defineNuxtConfig({
       url: siteUrl,
       logo: `${siteUrl}/icon-512.png`,
     },
+  },
+
+  // Demo routes are client-only (ssr:false), so the build-time link checker
+  // cannot resolve them; they are verified to return 200 at runtime.
+  linkChecker: {
+    excludeLinks: noindexRoutes,
   },
 
   // Dynamic OG rendering needs a native renderer we do not ship; a static
