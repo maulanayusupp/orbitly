@@ -42,7 +42,9 @@ app/
   components/   auto-imported by FILENAME (pathPrefix: false)
     ui/         presentational kit (UiButton, UiCard, UiModal, UiField, UiConfidence…)
     app/        shell (AppSidebar, AppTopbar, AppMobileNav, PublicHeader/Footer, BrandMark)
-    landing/    GeneratorStudio (composition root), ImageDrop, StageList, AiFlag
+    landing/    GeneratorStudio (composition root), ImageDrop, StageList, AiFlag,
+                HeroShowcase (hero art — shows the REAL output of the mug sample; keep in sync),
+                LandingSections (steps, workspace bento, trust, CTA)
     dashboard/  AreaChart, BarList, MiniColumns (SVG, no chart lib), ActivityFeed
     products/ community/ marketing/
   layouts/      default (public), app (workspace shell), store (public storefront)
@@ -54,6 +56,8 @@ reached through composables; UI never imports mock data.
 
 - Landing studio is a wizard: step 1 (upload) is shown alone and centred; step 2 (listing)
   mounts only once an image exists, and Reset returns to step 1.
+- `ProductPreview` is container-query driven; pass `framed` for the browser-mock look (landing
+  modal, editor) and omit it on the real storefront.
 - App routes are `ssr: false` (localStorage-backed); `/` is SSR, with the studio in `<ClientOnly>`.
 - Bump `DEMO_STORAGE_KEY` in `config/app.config.ts` whenever the seed shape/content changes.
 

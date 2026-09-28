@@ -145,6 +145,8 @@ async function destroy() {
           :seo-description="product.seoDescription"
           :slug="product.slug"
           show-seo
+          framed
+          :store-slug="workspace?.slug"
           @buy="product.status === 'published' ? navigateTo(storeUrl) : push('Publish first to enable checkout', 'info')"
         />
       </UiCard>

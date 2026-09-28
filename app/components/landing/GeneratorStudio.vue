@@ -215,6 +215,9 @@ defineExpose({ openPicker, runSample })
         :seo-description="gen.draft.seoDescription"
         slug="preview"
         show-seo
+        framed
+        :store-slug="store.snapshot?.workspace.slug"
+        :store-name="store.snapshot?.workspace.name"
         @buy="push('Checkout is live once the product is published from your workspace.', 'info')"
       />
       <template #footer>
