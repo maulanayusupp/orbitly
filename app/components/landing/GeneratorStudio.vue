@@ -16,6 +16,21 @@ const handingOff = ref(false)
 
 const busy = computed(() => gen.phase.value === 'analyzing')
 const hasImage = computed(() => !!gen.image.value)
+const listing = ref<HTMLElement | null>(null)
+
+// Wizard: step 2 only appears once there is an image to work from.
+const wizard = computed(() => [
+  { id: 'upload', label: 'Upload photo', state: hasImage.value ? 'done' : 'current' },
+  { id: 'review', label: 'Review listing', state: gen.phase.value === 'ready' ? 'done' : hasImage.value ? 'current' : 'todo' },
+  { id: 'publish', label: 'Add to workspace', state: gen.phase.value === 'ready' ? 'current' : 'todo' },
+] as const)
+
+// On stacked (narrow) layouts, bring the finished listing into view.
+watch(() => gen.phase.value, async (phase) => {
+  if (phase !== 'ready' || window.matchMedia('(min-width: 64rem)').matches) return
+  await nextTick()
+  listing.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+})
 const filledOrWaiting = (f: DraftField) => gen.isGenerated(f) || gen.phase.value === 'ready'
 
 const status = computed(() => {
@@ -49,7 +64,17 @@ defineExpose({ openPicker, runSample })
 </script>
 
 <template>
-  <div class="studio" :class="`studio--${gen.phase.value}`">
+  <div class="studio" :class="[`studio--${gen.phase.value}`, { 'studio--open': hasImage }]">
+    <ol class="studio__wizard" aria-label="Steps">
+      <li v-for="(w, i) in wizard" :key="w.id" :class="`is-${w.state}`" :aria-current="w.state === 'current' ? 'step' : undefined">
+        <span class="studio__wizard-n">
+          <UiIcon v-if="w.state === 'done'" name="check" :size="12" :stroke-width="2.6" />
+          <template v-else>{{ i + 1 }}</template>
+        </span>
+        {{ w.label }}
+      </li>
+    </ol>
+
     <!-- Left: image + analysis -->
     <section class="studio__col studio__visual" aria-label="Product image">
       <header class="studio__head">
@@ -86,8 +111,9 @@ defineExpose({ openPicker, runSample })
       />
     </section>
 
-    <!-- Right: generated listing -->
-    <section class="studio__col studio__form" aria-label="Generated product listing">
+    <!-- Right: generated listing — revealed once an image exists -->
+    <Transition name="reveal">
+    <section v-if="hasImage" ref="listing" class="studio__col studio__form" aria-label="Generated product listing">
       <header class="studio__head studio__head--split">
         <div class="studio__head-l">
           <span class="studio__step">2</span>
@@ -172,6 +198,7 @@ defineExpose({ openPicker, runSample })
         </div>
       </footer>
     </section>
+    </Transition>
 
     <UiModal :open="previewOpen" title="Storefront preview" size="xl" @close="previewOpen = false">
       <ProductPreview
@@ -208,8 +235,53 @@ defineExpose({ openPicker, runSample })
   background: color-mix(in srgb, var(--c-surface) 60%, transparent);
   box-shadow: var(--shadow-lg);
 
-  @include respond-to('lg') {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  // Step 1 alone: a single, centred upload panel.
+  max-width: 46rem;
+  margin-inline: auto;
+  transition: max-width 500ms var(--ease-out);
+
+  &--open {
+    max-width: none;
+
+    @include respond-to('lg') {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+
+  &__wizard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.5rem;
+    padding: 0.6rem 0.75rem 0.2rem;
+    color: var(--c-faint);
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    @include respond-to('lg') { grid-column: 1 / -1; }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: color var(--dur);
+    }
+
+    .is-current { color: var(--c-ink); }
+    .is-done { color: var(--c-ai-ink); }
+  }
+
+  &__wizard-n {
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.68rem;
+
+    .is-current & { border-color: var(--c-primary); background: var(--c-primary); color: var(--c-primary-ink); }
+    .is-done & { border-color: var(--c-ai); background: var(--c-ai); color: var(--c-primary-ink); }
   }
 
   &__col {
@@ -359,6 +431,19 @@ defineExpose({ openPicker, runSample })
 
   &__actions-r { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 }
+
+.reveal-enter-active {
+  transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
+}
+
+.reveal-enter-from {
+  opacity: 0;
+  transform: translateX(24px);
+
+  @include respond-below('lg') { transform: translateY(16px); }
+}
+
+.reveal-leave-active { display: none; }
 
 @keyframes scan {
   from { background-position: 0 100%, 0 0, 0 0; }

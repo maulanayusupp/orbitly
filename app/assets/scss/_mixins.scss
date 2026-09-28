@@ -89,6 +89,13 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+
+  // Clipped-background text vanishes when selected; give selection a solid ink.
+  &::selection {
+    background: var(--c-primary-soft);
+    color: var(--c-primary);
+    -webkit-text-fill-color: var(--c-primary);
+  }
 }
 
 @mixin motion-safe {

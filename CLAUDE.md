@@ -52,6 +52,8 @@ app/
 Rules: pages orchestrate; components are prop-driven; domain logic lives in services and is
 reached through composables; UI never imports mock data.
 
+- Landing studio is a wizard: step 1 (upload) is shown alone and centred; step 2 (listing)
+  mounts only once an image exists, and Reset returns to step 1.
 - App routes are `ssr: false` (localStorage-backed); `/` is SSR, with the studio in `<ClientOnly>`.
 - Bump `DEMO_STORAGE_KEY` in `config/app.config.ts` whenever the seed shape/content changes.
 
@@ -73,6 +75,8 @@ reached through composables; UI never imports mock data.
   (`surface`, `ai-mark`, `glass`, `respond-to`, `container`, `eyebrow`, `numeric`, …).
 - Only permitted `:style` use: passing CSS custom properties (currently `--swatch` in
   GeneratorStudio). SVG geometry attributes are fine.
+- `orbit-text` (gradient-clipped text) must keep its `::selection` override, or selected text
+  turns invisible.
 - Breakpoints `sm 36rem · md 48rem · lg 64rem · xl 80rem`; must not scroll horizontally at 375px.
 
 ## Commits
