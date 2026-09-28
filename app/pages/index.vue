@@ -1,5 +1,25 @@
 <script setup lang="ts">
-useHead({ title: 'Photo to product, in seconds', titleTemplate: 'Orbitly — %s' })
+import { FAQ, HOME_SEO } from '~/config/landing.config'
+import { usePageSeo } from '~/composables/usePageSeo'
+
+useHead({ title: HOME_SEO.title, titleTemplate: '%s' })
+usePageSeo(HOME_SEO.title, HOME_SEO.description, { imageAlt: HOME_SEO.imageAlt })
+
+const siteUrl = useRuntimeConfig().public.siteUrl as string
+useSchemaOrg([
+  defineWebSite({ name: 'Orbitly', description: HOME_SEO.description }),
+  defineWebPage({ '@type': ['WebPage', 'FAQPage'], name: HOME_SEO.title }),
+  defineSoftwareApp({
+    name: 'Orbitly',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    description: HOME_SEO.description,
+    url: siteUrl,
+    image: `${siteUrl}/og-image.png`,
+    offers: { price: 0, priceCurrency: 'USD' },
+  }),
+  ...FAQ.map(item => defineQuestion({ name: item.q, acceptedAnswer: item.a })),
+])
 
 const studio = ref<{ openPicker: () => void; runSample: () => void } | null>(null)
 const demoAnchor = ref<HTMLElement | null>(null)
@@ -80,6 +100,7 @@ function tryDemo() {
     </section>
 
     <LandingSections />
+    <LandingFaq />
   </div>
 </template>
 

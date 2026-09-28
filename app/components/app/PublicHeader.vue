@@ -13,6 +13,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
         <a href="#how">How it works</a>
         <a href="#workspace">Workspace</a>
         <a href="#trust">Trust</a>
+        <a href="#faq">FAQ</a>
       </nav>
       <UiButton to="/dashboard" variant="dark" size="sm" icon-right="arrowRight">Open dashboard</UiButton>
     </div>

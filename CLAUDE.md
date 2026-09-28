@@ -21,7 +21,8 @@ Sample workspace: **Kiln & Co.** (ceramics studio). English only. Light theme on
 
 ## Commands
 
-`pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` (must pass clean).
+`pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` (must pass clean) ·
+`pnpm og` · `pnpm icons`.
 
 ## Architecture (PRD §10)
 
@@ -44,7 +45,7 @@ app/
     app/        shell (AppSidebar, AppTopbar, AppMobileNav, PublicHeader/Footer, BrandMark)
     landing/    GeneratorStudio (composition root), ImageDrop, StageList, AiFlag,
                 HeroShowcase (hero art — shows the REAL output of the mug sample; keep in sync),
-                LandingSections (steps, workspace bento, trust, CTA)
+                LandingSections (steps, workspace bento, trust, CTA), LandingFaq
     dashboard/  AreaChart, BarList, MiniColumns (SVG, no chart lib), ActivityFeed
     products/ community/ marketing/
   layouts/      default (public), app (workspace shell), store (public storefront)
@@ -82,6 +83,23 @@ reached through composables; UI never imports mock data.
 - `orbit-text` (gradient-clipped text) must keep its `::selection` override, or selected text
   turns invisible.
 - Breakpoints `sm 36rem · md 48rem · lg 64rem · xl 80rem · xxl 100rem`; must not scroll horizontally at 375px.
+
+## SEO
+
+- `@nuxtjs/seo` 5.3.16 (site config, sitemap, robots, schema.org). `site.url` comes from
+  `NUXT_PUBLIC_SITE_URL` (see `.env.example`); set it to the real domain before deploying.
+- **Only `/` is indexable.** Every app/storefront route gets `ssr: false` + `robots: false`
+  (`X-Robots-Tag: noindex`) from the `noindexRoutes` list in `nuxt.config.ts`, and is excluded
+  from the sitemap — they are client-only demo data. Add new app routes to that list.
+- Home meta lives in `config/landing.config.ts` (`HOME_SEO`, description ≤ 155 chars). The same
+  `FAQ` array renders `LandingFaq` and the FAQPage JSON-LD, so they cannot drift.
+- `usePageSeo()` sets title/description/canonical/OG/Twitter. It must be **imported
+  explicitly** (`~/composables/usePageSeo`): with the SEO module installed Nuxt does not
+  auto-import it.
+- `og:image` must stay raster: `pnpm og` builds `public/og-image.png` (1200×630, ~65 KB);
+  `pnpm icons` builds PNG favicons, apple-touch-icon, 192/512 icons and `site.webmanifest`.
+  Re-run both after brand changes.
+- Optional verification meta: `NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, `NUXT_PUBLIC_BING_SITE_VERIFICATION`.
 
 ## Commits
 

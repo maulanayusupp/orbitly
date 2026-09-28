@@ -4,6 +4,7 @@ import type { NuxtError } from '#app'
 const props = defineProps<{ error: NuxtError }>()
 const notFound = computed(() => props.error.statusCode === 404)
 useHead({ title: notFound.value ? 'Page not found' : 'Something went wrong' })
+useSeoMeta({ robots: 'noindex, follow' })
 </script>
 
 <template>
