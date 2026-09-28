@@ -1,0 +1,5 @@
+// Single global SCSS entrypoint. Order: tokens → reset → base → utilities.
+@use 'tokens';
+@use 'reset';
+@use 'base';
+@use 'utilities';

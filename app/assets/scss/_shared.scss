@@ -1,0 +1,4 @@
+// Side-effect-free SCSS injected into every component <style> block.
+// Forwards variables, functions and mixins only — emits NO CSS.
+@forward 'variables';
+@forward 'mixins';

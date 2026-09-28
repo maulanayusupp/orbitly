@@ -1,0 +1,27 @@
+{
+  "name": "orbitly",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.19.0 || ^24.11.0"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "1.0.2",
+    "nuxt": "4.5.2",
+    "pinia": "4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "sass": "1.105.0",
+    "typescript": "5.9.3",
+    "vue-tsc": "3.3.11"
+  }
+}

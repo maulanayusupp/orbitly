@@ -1,0 +1,37 @@
+@use 'mixins' as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: z('toast');
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--c-ink);
+  color: var(--c-primary-ink);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
+}
+
+.num {
+  @include numeric;
+}
+
+// Route transition
+.page-enter-active,
+.page-leave-active {
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}

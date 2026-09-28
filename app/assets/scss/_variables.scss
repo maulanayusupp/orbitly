@@ -1,0 +1,26 @@
+// Build-time values. Runtime/theme values live as custom properties in _tokens.
+$font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+$font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+$breakpoints: (
+  'sm': 36rem,
+  'md': 48rem,
+  'lg': 64rem,
+  'xl': 80rem,
+);
+
+$z-layers: (
+  'base': 1,
+  'sticky': 20,
+  'sidebar': 30,
+  'header': 40,
+  'overlay': 60,
+  'modal': 70,
+  'toast': 80,
+);
+
+$container-max: 76rem;
+$gutter: clamp(1rem, 4vw, 2rem);
+$sidebar-width: 15.5rem;
+$topbar-height: 4rem;

@@ -1,0 +1,61 @@
+// Runtime design tokens. The only place colour literals are allowed.
+:root {
+  // Ink & paper
+  --c-ink: #16132b;
+  --c-ink-2: #3d3a55;
+  --c-muted: #6e6b86;
+  --c-faint: #a09db5;
+  --c-bg: #f6f4ef;
+  --c-surface: #ffffff;
+  --c-surface-2: #faf9f5;
+  --c-line: #e7e3da;
+  --c-line-strong: #d4cfc3;
+
+  // Brand
+  --c-primary: #5b3df5;
+  --c-primary-ink: #ffffff;
+  --c-primary-soft: #eeeaff;
+  --c-flare: #ff6b3d;
+  --c-flare-soft: #ffece4;
+
+  // AI — everything the model produced carries this hue
+  --c-ai: #0d9e7f;
+  --c-ai-ink: #06604d;
+  --c-ai-line: #9fe0cf;
+  --c-ai-wash: #effaf6;
+
+  // Status
+  --c-success: #1c9a5b;
+  --c-success-soft: #e5f6ec;
+  --c-warn: #b7791f;
+  --c-warn-soft: #fdf3e1;
+  --c-danger: #d23b4b;
+  --c-danger-soft: #fdeaec;
+  --c-info: #2f6fdb;
+  --c-info-soft: #e8f0fd;
+
+  // Chart series
+  --c-series-1: #5b3df5;
+  --c-series-2: #ff6b3d;
+  --c-series-3: #0d9e7f;
+  --c-series-4: #2f6fdb;
+
+  --c-orbit-mid: #b53df5;
+  --grad-orbit: linear-gradient(115deg, #5b3df5 0%, #b53df5 48%, #ff6b3d 100%);
+  --grad-ai: linear-gradient(115deg, #0d9e7f 0%, #5b3df5 100%);
+
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(22 19 43 / 0.04), 0 1px 1px rgb(22 19 43 / 0.03);
+  --shadow-md: 0 6px 20px -8px rgb(22 19 43 / 0.16), 0 2px 6px rgb(22 19 43 / 0.05);
+  --shadow-lg: 0 24px 60px -20px rgb(22 19 43 / 0.28), 0 6px 18px rgb(22 19 43 / 0.06);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur: 240ms;
+}

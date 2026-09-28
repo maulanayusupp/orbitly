@@ -1,0 +1,44 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+html {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: $font-body;
+  font-size: 100%;
+  line-height: 1.55;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $font-display;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+::selection {
+  background: var(--c-primary-soft);
+}
+
+:focus-visible {
+  @include focus-ring;
+  border-radius: var(--radius-xs);
+}
+
+code,
+kbd {
+  font-family: $font-mono;
+  font-size: 0.9em;
+}
+
+html.has-modal {
+  overflow: hidden;
+}

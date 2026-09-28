@@ -1,0 +1,81 @@
+# CLAUDE.md — Project guide for AI assistants & contributors
+
+Keep this file in sync with reality. Any change to rules, features, pages or AI behaviour
+updates this file (and README when user-facing).
+
+## What this is
+
+**Orbitly** — a frontend-only demo of a creator business OS (PRD in `docs/PRD.md`). The root
+route is an AI-first product-generation demo; `/dashboard` and siblings are the workspace.
+Sample workspace: **Kiln & Co.** (ceramics studio). English only. Light theme only.
+
+## Stack (verified versions)
+
+| Concern | Choice |
+| --- | --- |
+| Framework | Nuxt **4.5.2** (Vue 3.5, Vite 8, Nitro 2.13) |
+| State | Pinia **4.0.3** via `@pinia/nuxt` **1.0.2** |
+| Styling | **SCSS only** (`sass` 1.105.0) — no inline CSS |
+| Types | TypeScript 5.9 strict, `vue-tsc` 3.3 |
+| Node | **^22.19 or ^24.11** (Nuxt 4.5 `engines`; Node 20 fails the build with `Set#difference`) |
+
+## Commands
+
+`pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm typecheck` (must pass clean).
+
+## Architecture (PRD §10)
+
+```
+app/
+  config/       structure + constants (nav, product types, generation stages/templates)
+  types/        domain contracts (PRD §9) + ProductGeneration* API contract (PRD §15.5)
+  mock/seed.ts  deterministic seeded demo data, dates relative to now
+  services/     framework-free logic — NO Vue imports
+    adapter.ts          DataAdapter boundary (mock = seed + localStorage)
+    generation.service  local "AI": canvas pixel signals + template matching
+    intelligence.service Marketing Brain rules → Insight[] with evidence
+    analytics.service   KPIs, series, conversion
+    commerce.service    checkout (idempotency key), product-from-draft, publish blockers
+  stores/workspace.ts   single Pinia store; applies records returned by services, persists
+  composables/  useWorkspace, useAuth, useProducts, useCustomers, useCommunity,
+                useAnalytics, useAIInsights, useProductGenerator, useFormat, useToast
+  components/   auto-imported by FILENAME (pathPrefix: false)
+    ui/         presentational kit (UiButton, UiCard, UiModal, UiField, UiConfidence…)
+    app/        shell (AppSidebar, AppTopbar, AppMobileNav, PublicHeader/Footer, BrandMark)
+    landing/    GeneratorStudio (composition root), ImageDrop, StageList, AiFlag
+    dashboard/  AreaChart, BarList, MiniColumns (SVG, no chart lib), ActivityFeed
+    products/ community/ marketing/
+  layouts/      default (public), app (workspace shell), store (public storefront)
+  pages/        orchestration only
+```
+
+Rules: pages orchestrate; components are prop-driven; domain logic lives in services and is
+reached through composables; UI never imports mock data.
+
+- App routes are `ssr: false` (localStorage-backed); `/` is SSR, with the studio in `<ClientOnly>`.
+- Bump `DEMO_STORAGE_KEY` in `config/app.config.ts` whenever the seed shape/content changes.
+
+## AI honesty rules (do not break)
+
+1. Every AI-produced field is visibly marked (`ai-mark` mixin / `UiBadge tone="ai"`), stays
+   editable, shows “Edited” + Restore once changed, and has a “Why?” evidence line.
+2. Evidence must describe the **actual** signal used. Do not claim model capabilities the local
+   simulation does not have.
+3. No external side effect without explicit human approval: insights → `ApprovalModal`
+   (checkbox + button) → campaign in `scheduled` state only. Nothing is sent.
+4. Numbers shown as metrics are computed from the snapshot — no hard-coded deltas.
+5. Checkout never asks for card details.
+
+## Styling
+
+- Tokens (only place for colour literals): `assets/scss/_tokens.scss`.
+- `_variables.scss` + `_mixins.scss` are injected into every component via `_shared.scss`
+  (`surface`, `ai-mark`, `glass`, `respond-to`, `container`, `eyebrow`, `numeric`, …).
+- Only permitted `:style` use: passing CSS custom properties (currently `--swatch` in
+  GeneratorStudio). SVG geometry attributes are fine.
+- Breakpoints `sm 36rem · md 48rem · lg 64rem · xl 80rem`; must not scroll horizontally at 375px.
+
+## Commits
+
+Author **Maulana Yusup Abdullah <maulanayusupp@gmail.com>**. No AI co-author trailer.
+Commit and push after each change.
